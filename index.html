@@ -1,0 +1,38 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pyranometer Data</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Pyranometer Data</h1>
+    <div id="windspeed" class="{{ 'green' if data['windspeed_flag'][-1] else 'red' }}">
+        Wind Speed: {{ data['windspeed'][-1] }} m/s
+    </div>
+    <div id="windrose">
+        <!-- Placeholder for Windrose -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const winddirection = {{ data['winddirection']|tojson }};
+        const ctx = document.getElementById('windrose').getContext('2d');
+        const data = {
+            labels: ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'],
+            datasets: [{
+                label: 'Wind Direction',
+                data: winddirection, // Array of wind direction values
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+        const config = {
+            type: 'polarArea',
+            data: data,
+        };
+        const windRoseChart = new Chart(ctx, config);
+    </script>
+</body>
+</html>
